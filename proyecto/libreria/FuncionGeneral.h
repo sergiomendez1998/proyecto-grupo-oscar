@@ -11,8 +11,8 @@ namespace FuncionGeneral
 {
     bool existeEmpleadoAlta = false;
     bool estaSinSueldo = false;
-    bool existePeriodoPlanilla = false;
     bool existeEmpleadoRepetido = false;
+    bool existePeriodoPlanilla = false;
     bool existeEmpresa = false;
     int contadorEstadoAlta = 0;
     int contadorEstadoNormal = 0;
@@ -339,6 +339,18 @@ namespace FuncionGeneral
             }
         }
     }
+    void buscarEmpleadoPorDPI(int dpi)
+    {
+        for (ClaseEmpleado::Empleado empleadoRegistrado : ClaseEmpleado::ListaEmpleados)
+        {
+            if (empleadoRegistrado.dpiEmpleado == dpi)
+            {
+                existeEmpleadoRepetido = true;
+                break;
+            }
+        }
+    }
+
     void verificarEstadoDeAlta(vector<ClasePlanillaEmpresa::PlanillaEmpresa> listaTemporal)
     {
         // itera los datos del la lista temporal
@@ -359,22 +371,18 @@ namespace FuncionGeneral
                         // para luego guardarlos en el archivo de empleados
 
                         ClaseEmpleado::Empleado empleado(datosTemporal.idEmpleado, datosTemporal.dpiEmpleado, datosTemporal.nombreEmpleado, datosTemporal.salario);
-
-                        for (ClaseEmpleado::Empleado empleadoRegistro : ClaseEmpleado::ListaEmpleados)
+                        buscarEmpleadoPorDPI(datosTemporal.dpiEmpleado);
+                        if (existeEmpleadoRepetido == false)
                         {
-                            if (empleado.dpiEmpleado != empleadoRegistro.dpiEmpleado)
-                            {
-                                cout << "empleado no existia con estado de alta" << endl;
-                                cout << "Nombre: " + datosTemporal.nombreEmpleado + " registro Guardado!" << endl;
-                                ClaseEmpleado::listaTemporalEmpleados.push_back(empleado);
-                                break;
-                            }
+                            cout << "empleado no existia con estado de alta" << endl;
+                            cout << "Nombre: " + datosTemporal.nombreEmpleado + " registro Guardado!" << endl;
+                            ClaseEmpleado::listaTemporalEmpleados.push_back(empleado);
                         }
                     }
                 }
             }
         }
-    };
+    }
     void verificarEmpleadosNoExistentes(vector<ClasePlanillaEmpresa::PlanillaEmpresa> listaTemporal)
     {
         for (ClasePlanillaEmpresa::PlanillaEmpresa datosTemporal : listaTemporal)
@@ -385,7 +393,11 @@ namespace FuncionGeneral
                     datosTemporal.estado != "Alta" && datosTemporal.nombreEmpresa != datosRegistrados.nombreEmpresa)
                 {
                     ClaseEmpleado::Empleado empleado(datosTemporal.idEmpleado, datosTemporal.dpiEmpleado, datosTemporal.nombreEmpleado, datosTemporal.salario);
-                    ClaseEmpleado::listaTemporalEmpleados.push_back(empleado);
+                    buscarEmpleadoPorDPI(datosTemporal.dpiEmpleado);
+                    if (existeEmpleadoRepetido == false)
+                    {
+                        ClaseEmpleado::listaTemporalEmpleados.push_back(empleado);
+                    }
                 }
             }
         }
