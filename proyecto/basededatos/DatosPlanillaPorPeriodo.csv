@@ -1,7 +1,6 @@
 idEmpresa,Planilla,numeropatronal,nombreEmpresa,dirreccion,mes,CodigoEmpleado,Dpi Empleado,NombreEmpleado,estado,estadoSueldo,Contrato,salarioBase
-prueba-001,Prueba_1_01_2022,00,Prueba,Colgate 6av 13 calle Zona 8 Mixco,prueba,0,0,prueba,Alta,Con sueldo,Contratado,0
 CO-001,Colgate_1_01_2022,25,Colgate,Colgate 6av 13 calle Zona 8 Mixco,08/01/2022-08/31/2022,1,34545444,Oscar Mariano Javier Cheves Monroy,Alta,Con sueldo,Contratado,3500
-CO-001,Colgate_1_01_2022,25,Colgate,Colgate 6av 13 calle Zona 8 Mixco,08/01/2022-08/31/2022,2,66655477,Ruth Noemi Mendez Ordonez,Alta,-,-,3200
+CO-001,Colgate_1_01_2022,25,Colgate,Colgate 6av 13 calle Zona 8 Mixco,08/01/2022-08/31/2022,2,66655477,Ruth Noemi Mendez Ordonez,Alta,-,-,2000
 CO-001,Colgate_1_01_2022,25,Colgate,Colgate 6av 13 calle Zona 8 Mixco,08/01/2022-08/31/2022,3,26644444,Miriam Alejandrea Ruano Aldana,Alta,-,-,5000
-CO-001,Colgate_1_01_2022,25,Colgate,Colgate  6av 13 calle Zona 8 Mixco,08/01/2022-08/31/2022,4,3366555,Ricardo Milos Alruano Perez,Alta,-,-,3200
+CO-001,Colgate_1_01_2022,25,Colgate,Colgate  6av 13 calle Zona 8 Mixco,08/01/2022-08/31/2022,4,3366555,Ricardo Milos Alruano Perez,Alta,-,-,3500
 CO-001,Colgate_1_01_2022,25,Colgate,Colgate 6av 13 calle Zona 8 Mixco,08/01/2022-08/31/2022,5,5899999,Emiliano Miguel Toc Lopez,Suspendido,Sin sueldo,Suspendido por el Igss,0

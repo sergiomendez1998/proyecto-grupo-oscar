@@ -116,7 +116,7 @@ namespace FuncionGeneral
             getline(archivoPlanilla, codigoPlanillaEmpresa, ',');
             getline(archivoPlanilla, valortemporal, ',');
             numeroPatronalEmpresa = stoi(valortemporal);
-            getline(archivoPlanilla, nombreEmpleado, ',');
+            getline(archivoPlanilla, nombreEmpresa, ',');
             getline(archivoPlanilla, direccionEmpresa, ',');
             getline(archivoPlanilla, periodoEmpresa, ',');
             getline(archivoPlanilla, valortemporal, ',');
@@ -451,19 +451,50 @@ namespace FuncionGeneral
         }
         datosPlanilla.close();
     }
+
+    void evaluarEmpleadosDuplicadosSueldoMinimo(int dpi, int sueldo, string nombreEmpresa)
+    {
+        for (ClasePlanillaEmpresa::PlanillaEmpresa datosSueldoMimino : ClasePlanillaEmpresa::sueldosMinimos)
+        {
+            if (datosSueldoMimino.dpiEmpleado == dpi && datosSueldoMimino.salario == sueldo && datosSueldoMimino.nombreEmpresa == nombreEmpresa)
+            {
+                existeEmpleadoRepetido = true;
+                break;
+            }
+            else
+            {
+                existeEmpleadoRepetido = false;
+            }
+        }
+    }
+    void evaluarEmpleadosDuplicadosSueldoM3000(int dpi, int sueldo, string nombreEmpresa)
+    {
+        for (ClasePlanillaEmpresa::PlanillaEmpresa datosSueldoM3000 : ClasePlanillaEmpresa::sueldosMayorA3000)
+        {
+            if (datosSueldoM3000.dpiEmpleado == dpi && datosSueldoM3000.salario == sueldo && datosSueldoM3000.nombreEmpresa == nombreEmpresa)
+            {
+                existeEmpleadoRepetido = true;
+                break;
+            }
+            else
+            {
+                existeEmpleadoRepetido = false;
+            }
+        }
+    }
     void filtrosueldomayoralminimo()
     {
         for (ClasePlanillaEmpresa::PlanillaEmpresa planilla : ClasePlanillaEmpresa::ListaPlanillaEmpresa)
         {
-            if (planilla.salario > 3000)
+            if (planilla.salario != 0)
             {
-                for (ClasePlanillaEmpresa::PlanillaEmpresa datsueldomayor : ClasePlanillaEmpresa::sueldosMayorA3000)
+                if (planilla.salario > 3000)
                 {
-                    if (planilla.dpiEmpleado != datsueldomayor.dpiEmpleado && planilla.nombreEmpresa != datsueldomayor.nombreEmpresa)
+                    evaluarEmpleadosDuplicadosSueldoM3000(planilla.dpiEmpleado, planilla.salario, planilla.nombreEmpresa);
+                    if (!existeEmpleadoRepetido)
                     {
                         ClasePlanillaEmpresa::PlanillaEmpresa empleadoNuevo(planilla.idEmpleado, planilla.dpiEmpleado, planilla.nombreEmpleado, planilla.salario, planilla.nombreEmpresa);
                         ClasePlanillaEmpresa::sueldosMayorA3000.push_back(empleadoNuevo);
-                        break;
                     }
                 }
             }
@@ -473,35 +504,46 @@ namespace FuncionGeneral
     {
         for (ClasePlanillaEmpresa::PlanillaEmpresa planilla : ClasePlanillaEmpresa::ListaPlanillaEmpresa)
         {
-            if (planilla.salario < 2900)
+            if (planilla.salario != 0)
             {
-                for (ClasePlanillaEmpresa::PlanillaEmpresa datosSueldoMimino : ClasePlanillaEmpresa::sueldosMinimos)
+                if (planilla.salario < 2900)
                 {
-                    if (planilla.dpiEmpleado != datosSueldoMimino.dpiEmpleado && planilla.nombreEmpresa != datosSueldoMimino.nombreEmpresa)
+
+                    evaluarEmpleadosDuplicadosSueldoMinimo(planilla.dpiEmpleado, planilla.salario, planilla.nombreEmpresa);
+                    if (!existeEmpleadoRepetido)
                     {
                         ClasePlanillaEmpresa::PlanillaEmpresa empleadoNuevo(planilla.idEmpleado, planilla.dpiEmpleado, planilla.nombreEmpleado, planilla.salario, planilla.nombreEmpresa);
                         ClasePlanillaEmpresa::sueldosMinimos.push_back(empleadoNuevo);
-                        break;
                     }
                 }
             }
         }
     }
+
     void filtrarEstadosSuspendidosDelPresenteMes()
     {
 
         for (ClasePlanillaEmpresa::PlanillaEmpresa planilla : ClasePlanillaEmpresa::ListaPlanillaEmpresa)
         {
-            if (planilla.estado == "Suspendido" && planilla.periodoEmpresa == "02/01/2022-08/01/2022")
+            if (planilla.estado == "Suspendido" && planilla.periodoEmpresa == "09/01/2022-09/31/2022")
             {
                 for (ClasePlanillaEmpresa::PlanillaEmpresa datosSuspendidos : ClasePlanillaEmpresa::empleadosSuspendidos)
                 {
-                    if (planilla.dpiEmpleado != datosSuspendidos.dpiEmpleado && planilla.nombreEmpresa != datosSuspendidos.nombreEmpresa)
+                    if (planilla.dpiEmpleado == datosSuspendidos.dpiEmpleado && planilla.nombreEmpresa == datosSuspendidos.nombreEmpresa)
                     {
-                        ClasePlanillaEmpresa::PlanillaEmpresa empleadoNuevo(planilla.idEmpleado, planilla.dpiEmpleado, planilla.nombreEmpleado, planilla.estado, planilla.nombreEmpresa);
-                        ClasePlanillaEmpresa::empleadosSuspendidos.push_back(empleadoNuevo);
+                        existeEmpleadoRepetido = true;
                         break;
                     }
+                    else
+                    {
+                        existeEmpleadoRepetido = false;
+                    }
+                }
+
+                if (!existeEmpleadoRepetido)
+                {
+                    ClasePlanillaEmpresa::PlanillaEmpresa empleadoNuevo(planilla.idEmpleado, planilla.dpiEmpleado, planilla.nombreEmpleado, planilla.estado, planilla.nombreEmpresa);
+                    ClasePlanillaEmpresa::empleadosSuspendidos.push_back(empleadoNuevo);
                 }
             }
         }
@@ -517,6 +559,7 @@ namespace FuncionGeneral
         reporteHtml << "<title>Reporte</title>" << endl;
         reporteHtml << "</head>" << endl;
         reporteHtml << "<body>" << endl;
+        reporteHtml << "<h1>Reporte de Sueldos minimos</h1>" << endl;
         reporteHtml << "<table border='1' width = '100%'>" << endl;
         reporteHtml << " <thead>" << endl;
         reporteHtml << "<tr>" << endl;
@@ -555,6 +598,7 @@ namespace FuncionGeneral
         reporteHtml << "<title>Reporte</title>" << endl;
         reporteHtml << "</head>" << endl;
         reporteHtml << "<body>" << endl;
+        reporteHtml << "<h1>Reporte de Sueldos Mayores a al sueldo minimo</h1>" << endl;
         reporteHtml << "<table border='1' width = '100%'>" << endl;
         reporteHtml << " <thead>" << endl;
         reporteHtml << "<tr>" << endl;
@@ -593,6 +637,7 @@ namespace FuncionGeneral
         reporteHtml << "<title>Reporte</title>" << endl;
         reporteHtml << "</head>" << endl;
         reporteHtml << "<body>" << endl;
+        reporteHtml << "<h1>Empleados Suspendidos</h1>" << endl;
         reporteHtml << "<table border='1' width = '100%'>" << endl;
         reporteHtml << " <thead>" << endl;
         reporteHtml << "<tr>" << endl;

@@ -194,11 +194,11 @@ namespace Menu
             opcion = 1;
             break;
         case 1:
-            FuncionGeneral::generarReporteSueldoMayorA3000();
+            FuncionGeneral::generarReporteSueldoMimino();
             cout << "reporte generado" << endl;
             break;
         case 2:
-            FuncionGeneral::generarReporteSueldoMimino();
+            FuncionGeneral::generarReporteSueldoMayorA3000();
             cout << "reporte generado" << endl;
             break;
         case 3:
